@@ -4,31 +4,39 @@ import EditAutoForm from './components/EditAutoForm';
 import AddAutoForm from './components/AddAutoForm';
 import AutoTable from './components/AutoTable';
 import './App.css';
-//import axios from 'axios';
+import './main.css';
+import axios from 'axios';
 
-//const url = "http://localhost:3001/api/autos";
+const url = "http://localhost:3001/api/autos";
 
 function App() {
-
-  const autosDAta = [
-    {
-
+  //Listado para trabajar de forma local sin axios
+  const autosData = [
+    /*{
       marca: "Hyundai",
       linea: "Nueva",
       modelo: "2015",
       potencia: "600",
       cilindraje: "500",
       placa: "XAC1258"
-    }
+    },
+    {
+      marca: "Chevrolet",
+      linea: "Nueva",
+      modelo: "2015",
+      potencia: "600",
+      cilindraje: "500",
+      placa: "DAC1258"
+    }*/
   ]
-  /*
-    useEffect(() => {
-      axios.get(url)
-        .then((result) => {
-          setAutos(result.data)
-        });
-    }, [])
-  */
+
+  useEffect(() => {
+    axios.get(url)
+      .then((result) => {
+        setAutos(result.data)
+      });
+  }, [])
+
   const initialFormState = {
     marca: "",
     linea: "",
@@ -38,35 +46,50 @@ function App() {
     placa: ""
   }
 
-  const [autos, setAutos] = useState(autosDAta)
+  const [autos, setAutos] = useState(autosData)
   const [currentAuto, setCurrentAuto] = useState(initialFormState)
   const [editing, setEditing] = useState(false)
 
   //CRUD
+  //Función para guardar
   const addAuto = auto => {
-    /*axios.post(url)
+    console.log(auto);
+    axios.post(url, auto)
       .then(res => {
-        (res.status === 200) ? alert("Registro exitoso") : Promise.reject()
+        (res.status == 200) ? alert("Auto guardado exitosamente") : Promise.reject()
       })
-      .catch(err => alert("Ocurrió un error"))*/
-
+      .catch(err => alert("Ocurrió un error"))
     setAutos([...autos, auto])
   }
-
+  //Función para editar
   const editAuto = (placa, editAuto) => {
+    console.log(placa)
+    console.log(editAuto.placa)
     setEditing(false)
-    setAutos(autos.map(auto => (auto.placa === placa ? editAuto : auto)))
+    axios.put(url + '/' + editAuto.placa, editAuto)
+      .then(res => {
+        console.log(res);
+        (res.status == 200) ? alert("Auto modificado exitosamente") : Promise.reject()
+      })
+      .catch((err) => alert("ocurrió un error"))
+    setAutos(autos.map(auto => (auto.placa == placa ? editAuto : auto)))
   }
 
-
-  const deleteAuto = (placa, deleteAuto) => {
+  //Funcion para borrar
+  const deleteAuto = placa => {
     setEditing(false)
+    axios.delete(url + '/' + placa)
+      .then((res) => {
+        (res.status == 200) ? alert("Auto eliminado") : Promise.reject()
+      })
+      .catch((err) => alert("Ocurrió un error"))
     setAutos(autos.filter(auto => auto.placa !== placa))
   }
 
+  //Esta función llena el formulario de editar con la info de el registro
   const editRow = auto => {
     setEditing(true)
-    setCurrentAuto({ placa: auto.placa, marca: auto.marca, linea: auto.linea, modelo:auto.modelo, potencia:auto.potencia, cilindraje:auto.cilindraje })
+    setCurrentAuto({ placa: auto.placa, marca: auto.marca, linea: auto.linea, modelo: auto.modelo, potencia: auto.potencia, cilindraje: auto.cilindraje })
   }
 
   return (
@@ -75,7 +98,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
       </header>
 
-      <div className='container'>
+      <div className='container AppContainer'>
         <h1>Manejo de Autos</h1>
         <div className='flex-row'>
           <div className='flex-large'>

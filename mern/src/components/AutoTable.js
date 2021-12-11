@@ -26,8 +26,14 @@ const AutoTable = props => {
                             <td>{auto.potencia}</td>
                             <td>{auto.cilindraje}</td>
                             <td>
-                                <button onClick={() => { props.editRow(auto) }} className="button muted-button">Editar</button>
-                                <button onClick={() => { props.deleteAuto(auto) }} className="button muted-button">Eliminar</button>
+                                <button onClick={() => {
+                                    props.editRow(auto)
+                                }} className="button muted-button"
+                                >Editar</button>
+                                <button onClick={() => {
+                                    props.deleteAuto(auto.placa)
+                                }} className="button muted-button"
+                                >Eliminar</button>
                             </td>
                         </tr>
                     )) : (

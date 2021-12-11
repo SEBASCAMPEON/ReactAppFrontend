@@ -18,7 +18,7 @@ const EditAutoForm = props => {
     return (
         <form onSubmit={event => {
             event.preventDefault()
-            props.editAuto(auto.placa)
+            props.editAuto(auto.placa, auto)
         }}
         >
             <label>Placa</label>
@@ -33,10 +33,10 @@ const EditAutoForm = props => {
             <input type="text" name="potencia" value={auto.potencia} onChange={handleInputChange} />
             <label>Cilindraje</label>
             <input type="text" name="cilindraje" value={auto.cilindraje} onChange={handleInputChange} />
-
+            <button>Actualizar</button>
             <button onClick={() => props.setEditing(false)} type="submit"
                 className="button muted-button">
-                Editar
+                Cancelar
             </button>
         </form>
     )

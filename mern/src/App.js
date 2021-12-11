@@ -4,31 +4,31 @@ import EditAutoForm from './components/EditAutoForm';
 import AddAutoForm from './components/AddAutoForm';
 import AutoTable from './components/AutoTable';
 import './App.css';
-import axios from 'axios';
+//import axios from 'axios';
 
-const url = "http://localhost:3001/api/autos";
+//const url = "http://localhost:3001/api/autos";
 
 function App() {
 
   const autosDAta = [
-    /* {
-     
+    {
+
       marca: "Hyundai",
       linea: "Nueva",
       modelo: "2015",
       potencia: "600",
       cilindraje: "500",
       placa: "XAC1258"
-    }*/
+    }
   ]
-
-  useEffect(() => {
-    axios.get(url)
-      .then((result) => {
-        setAutos(result.data)
-      });
-  }, [])
-
+  /*
+    useEffect(() => {
+      axios.get(url)
+        .then((result) => {
+          setAutos(result.data)
+        });
+    }, [])
+  */
   const initialFormState = {
     marca: "",
     linea: "",
@@ -44,11 +44,11 @@ function App() {
 
   //CRUD
   const addAuto = auto => {
-    axios.post(url)
+    /*axios.post(url)
       .then(res => {
         (res.status === 200) ? alert("Registro exitoso") : Promise.reject()
       })
-      .catch(err => alert("Ocurrió un error"))
+      .catch(err => alert("Ocurrió un error"))*/
 
     setAutos([...autos, auto])
   }
@@ -59,14 +59,14 @@ function App() {
   }
 
 
-  const deleteAuto = placa => {
+  const deleteAuto = (placa, deleteAuto) => {
     setEditing(false)
     setAutos(autos.filter(auto => auto.placa !== placa))
   }
 
   const editRow = auto => {
     setEditing(true)
-    setCurrentAuto({ placa: auto.placa, marca: auto.marca, linea: auto.linea, })
+    setCurrentAuto({ placa: auto.placa, marca: auto.marca, linea: auto.linea, modelo:auto.modelo, potencia:auto.potencia, cilindraje:auto.cilindraje })
   }
 
   return (
